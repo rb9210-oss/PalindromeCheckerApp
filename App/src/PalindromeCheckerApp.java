@@ -1,33 +1,42 @@
-public class PalindromeCheckerApp {
+// Service class that contains palindrome logic
+class PalindromeChecker {
 
-    public static void main(String[] args) {
+    // Method to check whether a string is a palindrome
+    public boolean checkPalindrome(String word) {
 
-        // Original string with spaces and mixed case
-        String text = "Madam In Eden Im Adam";
-
-        // Normalize the string
-        String normalized = text.replaceAll("\\s+", "").toLowerCase();
-
-        // Palindrome check using two-pointer technique
         int start = 0;
-        int end = normalized.length() - 1;
-
-        boolean isPalindrome = true;
+        int end = word.length() - 1;
 
         while (start < end) {
-            if (normalized.charAt(start) != normalized.charAt(end)) {
-                isPalindrome = false;
-                break;
+            if (word.charAt(start) != word.charAt(end)) {
+                return false;
             }
             start++;
             end--;
         }
 
+        return true;
+    }
+}
+
+// Application class
+public class PalindromeCheckerApp {
+
+    public static void main(String[] args) {
+
+        String text = "level";
+
+        // Create object of PalindromeChecker
+        PalindromeChecker checker = new PalindromeChecker();
+
+        // Call service method
+        boolean result = checker.checkPalindrome(text);
+
         // Display result
-        if (isPalindrome) {
-            System.out.println("\"" + text + "\"" + " is a Palindrome (ignoring spaces and case)");
+        if (result) {
+            System.out.println(text + " is a Palindrome");
         } else {
-            System.out.println("\"" + text + "\"" + " is not a Palindrome");
+            System.out.println(text + " is not a Palindrome");
         }
     }
 }
