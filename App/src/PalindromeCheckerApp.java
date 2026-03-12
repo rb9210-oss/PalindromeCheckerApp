@@ -1,42 +1,75 @@
-// Service class that contains palindrome logic
-class PalindromeChecker {
+import java.util.Stack;
+import java.util.Deque;
+import java.util.LinkedList;
 
-    // Method to check whether a string is a palindrome
-    public boolean checkPalindrome(String word) {
-
-        int start = 0;
-        int end = word.length() - 1;
-
-        while (start < end) {
-            if (word.charAt(start) != word.charAt(end)) {
-                return false;
-            }
-            start++;
-            end--;
-        }
-
-        return true;
-    }
-}
-
-// Application class
 public class PalindromeCheckerApp {
+
+    // Strategy Interface
+    interface PalindromeStrategy {
+        boolean checkPalindrome(String word);
+    }
+
+    // Stack Strategy
+    static class StackStrategy implements PalindromeStrategy {
+
+        public boolean checkPalindrome(String word) {
+
+            Stack<Character> stack = new Stack<>();
+
+            for (char c : word.toCharArray()) {
+                stack.push(c);
+            }
+
+            for (char c : word.toCharArray()) {
+                if (c != stack.pop()) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    // Deque Strategy
+    static class DequeStrategy implements PalindromeStrategy {
+
+        public boolean checkPalindrome(String word) {
+
+            Deque<Character> deque = new LinkedList<>();
+
+            for (char c : word.toCharArray()) {
+                deque.addLast(c);
+            }
+
+            while (deque.size() > 1) {
+                if (deque.removeFirst() != deque.removeLast()) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    // Context Method
+    public static boolean checkPalindrome(String word, PalindromeStrategy strategy) {
+        return strategy.checkPalindrome(word);
+    }
 
     public static void main(String[] args) {
 
-        String text = "level";
+        String word = "level";
 
-        // Create object of PalindromeChecker
-        PalindromeChecker checker = new PalindromeChecker();
+        // Choose strategy dynamically
+        PalindromeStrategy strategy = new StackStrategy();
+        // PalindromeStrategy strategy = new DequeStrategy();
 
-        // Call service method
-        boolean result = checker.checkPalindrome(text);
+        boolean result = checkPalindrome(word, strategy);
 
-        // Display result
         if (result) {
-            System.out.println(text + " is a Palindrome");
+            System.out.println(word + " is a Palindrome");
         } else {
-            System.out.println(text + " is not a Palindrome");
+            System.out.println(word + " is not a Palindrome");
         }
     }
 }
